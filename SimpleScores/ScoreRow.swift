@@ -42,6 +42,7 @@ struct ScoreRow: View {
         .padding(10)
         .animation(nil, value: item)
         .background(Color(item.color.rawValue))
+        .listRowSeparator(.hidden)
         
         
     }

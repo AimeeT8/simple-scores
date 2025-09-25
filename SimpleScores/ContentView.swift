@@ -24,9 +24,11 @@ struct ContentView: View {
             }
             // don't add more players than there are colors.
             .disabled(model.items.count == ColorChoice.allCases.count)
+            .listRowSeparator(.hidden)
         }
         .animation(.default, value: model.items)
         .navigationTitle("Simple Scores")
+        .listStyle(.plain)
     }
 }
 
