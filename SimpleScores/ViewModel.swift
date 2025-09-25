@@ -52,11 +52,15 @@ class ViewModel: ObservableObject {
     func delete(_ offsets: IndexSet) {
         items.remove(atOffsets: offsets)
     }
+  
+    func deleteAll() {
+        items.removeAll()
+    }
     
-    // remove all items in the array that are part of the set
-    func delete(_ selected: Set<Score>) {
-        items.removeAll(where: selected.contains)
-        
+    func reset() {
+        for i in 0..<items.count {
+            items[i].score = 0
+        }
     }
     
 }
