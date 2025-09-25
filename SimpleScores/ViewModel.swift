@@ -44,7 +44,10 @@ class ViewModel: ObservableObject {
     }
     
     func add() {
-        let newItem = Score()
+        // everytime a player is created pick a different unused color:
+        let usedColors = items.map(\.color)
+        let color = ColorChoice.allCases.first { usedColors.contains($0) == false } ?? .blue
+        let newItem = Score(color: color)
         items.append(newItem)
     }
     
