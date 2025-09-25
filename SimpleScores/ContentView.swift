@@ -8,17 +8,28 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    @ObservedObject var model: ViewModel
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        List {
+            ForEach($model.items, content: ScoreRow.init)
+                .onDelete(perform: model.delete)
+            
+            Button(action: model.add) {
+                Label("Add Player", systemImage: "plus")
+                    .font(.title.bold())
+                    .frame(maxWidth: .infinity, minHeight: 44)
+                    .contentShape(Rectangle())
+            }
+            // don't add more players than there are colors.
+            .disabled(model.items.count == ColorChoice.allCases.count)
         }
-        .padding()
+        .animation(.default, value: model.items)
+        .navigationTitle("Simple Scores")
     }
 }
 
 #Preview {
-    ContentView()
+    ContentView(model: ViewModel())
 }
