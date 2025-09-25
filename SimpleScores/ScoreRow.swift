@@ -24,6 +24,7 @@ struct ScoreRow: View {
             
             TextField("Player Name", text: $item.playerName)
                 .font(.title.weight(.black))
+                .minimumScaleFactor(0.75)
                 .frame(maxWidth: .infinity, alignment: .leading)
             
             Text(String(item.score))
@@ -43,6 +44,7 @@ struct ScoreRow: View {
         .animation(nil, value: item)
         .background(Color(item.color.rawValue))
         .listRowSeparator(.hidden)
+        .listRowInsets(EdgeInsets(top: 5, leading: 10, bottom: 5, trailing: 10))
         
         
     }
