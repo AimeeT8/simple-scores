@@ -26,6 +26,7 @@ struct ScoreRow: View {
                 .font(.title.weight(.black))
                 .minimumScaleFactor(0.75)
                 .frame(maxWidth: .infinity, alignment: .leading)
+                .submitLabel(.done)
             
             Text(String(item.score))
                 .font(.title.weight(.black))
@@ -45,6 +46,18 @@ struct ScoreRow: View {
         .background(Color(item.color.rawValue))
         .listRowSeparator(.hidden)
         .listRowInsets(EdgeInsets(top: 5, leading: 10, bottom: 5, trailing: 10))
+        .accessibilityElement()
+        .accessibilityLabel(item.playerName)
+        .accessibilityValue(String(item.score))
+        .accessibilityHint("Activate to rename this player.")
+        .accessibilityAddTraits(.isButton)
+        .accessibilityAdjustableAction { direction in
+            if direction == .increment {
+                item.score = 1
+            } else {
+                item.score -= 1
+            }
+        }
         
         
     }
