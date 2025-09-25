@@ -1,0 +1,62 @@
+//
+//  ViewModel.swift
+//  ToDo
+//
+//  Created by Aimee Temple on 2025-09-22.
+//
+import Combine
+import Foundation
+
+
+class ViewModel: ObservableObject {
+    
+    @Published var items: [Score]
+    
+    
+    private let savePath = FileManager.documentsDIrectory.appendingPathComponent("SavedItems")
+    
+    
+    private var saveSubscription: AnyCancellable?
+    
+    init() {
+        do {
+            let data = try Data(contentsOf: savePath)
+            items = try JSONDecoder().decode([Score].self, from: data)
+        } catch {
+            items = []
+        }
+        // Detect a 5 second delay after a change then save. This is in case of an app crash the data will still be saved.
+        saveSubscription = $items.debounce(for: 5, scheduler: RunLoop.main)
+            .sink { [weak self] _ in
+                self?.save()
+            }
+    }
+    
+    
+    func save() {
+        print("Saving!!")
+        do {
+            let data = try JSONEncoder().encode(items)
+            try data.write(to: savePath, options: [.atomic, .completeFileProtection])
+        } catch {
+            print("Unable to save data")
+        }
+    }
+    
+    func add() {
+        let newItem = Score()
+        items.append(newItem)
+    }
+    
+    // swipe to delete
+    func delete(_ offsets: IndexSet) {
+        items.remove(atOffsets: offsets)
+    }
+    
+    // remove all items in the array that are part of the set
+    func delete(_ selected: Set<Score>) {
+        items.removeAll(where: selected.contains)
+        
+    }
+    
+}
